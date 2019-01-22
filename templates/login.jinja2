@@ -1,0 +1,46 @@
+## extends "base-login.jinja2"
+
+## block head
+
+## endblock
+
+## block content
+  <p>&nbsp</p>
+
+  <div class="grid_24 main">
+    <div class="login-rectangle">
+      ## if next_url:
+      <form action="/process_login?next_url={{ next_url }}" method="post" class="form-style-1">
+      ## else:
+      <form action="/process_login" method="post" id="login_form" class="form-style-1">
+      ## endif
+      <p style="text-align:center; color: #fcfcfc; font-size: 1.9em;">SIGN IN</p>
+      <hr/>
+
+      <div class="centered">
+      <ul>
+      <li><label class="username">Username</label><input class="login-field" name="user_id" autofocus></input></li>
+      <li><label class="username">Password</label><input class="login-field" name="password" type="password"></input></li>
+      <li>
+      &nbsp
+      </li>
+      <li>
+      &nbsp
+      </li>
+      <li>
+          <div class="centered">
+            <input class="signin-btn" type="submit" value="SIGN IN" name="submit" onclick="popup();"/>
+          </div>
+      </li>
+      </ul>
+      </div>
+
+     </form>
+     </div>
+        <div id="hidden_message" style="visibility:hidden" align="center">
+            <p name="hidden_text" style=""><b><i>Please authenticate your login via your smart phone...</i></b></p>
+        </div>
+    </div>
+  </div>
+
+## endblock
