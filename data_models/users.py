@@ -54,8 +54,8 @@ def get_user_by_id(user_id):
 
 
 def get_users():
-    sql = ('SELECT a.screen_name, a.email, a.admin_user
-           ' a.updated_at, a.created_at
+    sql = ('SELECT a.screen_name, a.email,'
+           ' a.updated_at, a.created_at '
            'FROM blogger.users a '
            'order by screen_name')
     cur = get_cursor()

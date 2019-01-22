@@ -8,9 +8,8 @@ from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
 from werkzeug.contrib.sessions import FilesystemSessionStore
 from werkzeug.utils import redirect
 
-from blogger.web_app.data_models.users import get_user_group
-from blogger.web_app.data_models.users import authenticate as pw_auth
-from blogger.web_app.data_models.users import get_user_by_screen_name
+#from blogger.data_models.users import authenticate as pw_auth
+#from blogger.data_models.users import get_user_by_screen_name
 
 from blogger.logger import logging
 from blogger.cfg import cfg
@@ -88,7 +87,7 @@ def login(req):
                             mimetype='text/html')
         req.session['user_id'] = user_id
         session_store.save(req.session)
-            response = redirect('/')
+        response = redirect('/')
         response.set_cookie('session_id', req.session.sid,
                             max_age=cfg.session_timeout,
                             secure=None, httponly=True)
@@ -109,11 +108,11 @@ def home(req):
     rows = cfg.blog_page_count
     page = req.values.get('page', 0, type=int)
     
-    user_id=get_session_user_id(req))
+    user_id=get_session_user_id(req)
     blogs = get_blogs(rows=25, user_id=user_id) #Time sorted latest 25 blogs
 
     return Response(render('home.j2',
                            rows=rows,
                            page=page,
-                           user_id=get_session_user_id(req))
+                           user_id=get_session_user_id(req)),
                     mimetype='text/html')
