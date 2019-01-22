@@ -9,24 +9,21 @@ from blogger.logger import logging
 logger = logging.getLogger(__name__)
 
 
-def add_user_wrapper(args):
-    if args.passwd:
-        user_id = add_user(args.screen_name, args.email)
-        hashed = bcrypt.hashpw(args.passwd, bcrypt.gensalt())
-        store_passwd(user_id, hashed)
-        return user_id
-    else:
-        return add_user(args.screen_name, args.email)
+def add_user_wrapper(screen_name, passwd):
+    user_id = add_user(screen_name)
+    hashed = bcrypt.hashpw(passwd, bcrypt.gensalt())
+    store_passwd(user_id, hashed)
+    return user_id
 
 
-def add_user(screen_name, email):
+def add_user(screen_name):
     cur = get_cursor()
     sql = ('INSERT INTO blogger.users '
-           '(screen_name, email) '
-           'values (%s, %s) '
+           '(screen_name) '
+           'values (%s) '
            'RETURNING user_id')
     try:
-        cur.execute(sql, (screen_name, email))
+        cur.execute(sql, (screen_name))
         conn.commit()
         user_id = cur.fetchone()[0]
         return user_id
@@ -54,7 +51,7 @@ def get_user_by_id(user_id):
 
 
 def get_users():
-    sql = ('SELECT a.screen_name, a.email,'
+    sql = ('SELECT a.screen_name,'
            ' a.updated_at, a.created_at '
            'FROM blogger.users a '
            'order by screen_name')
@@ -122,21 +119,4 @@ def authenticate(screen_name, passwd):
 
 if __name__ == '__main__':
     import argparse
-    parser = argparse.ArgumentParser()
-    sub_parsers = parser.add_subparsers()
 
-    parser_list = sub_parsers.add_parser('list', help='List users.')
-    parser_list.set_defaults(func=list_users)
-
-    parser_passwd = sub_parsers.add_parser('passwd', help='Change password.')
-    parser_passwd.add_argument('user_id')
-    parser_passwd.set_defaults(func=set_passwd_wrapper)
-
-    parser_add = sub_parsers.add_parser('add', help='Add a user.')
-    parser_add.add_argument('screen_name')
-    parser_add.add_argument('email')
-    parser_add.add_argument('--passwd')
-    parser_add.set_defaults(func=add_user_wrapper)
-
-    args = parser.parse_args()
-    args.func(args)

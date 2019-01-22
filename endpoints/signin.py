@@ -8,8 +8,9 @@ from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
 from werkzeug.contrib.sessions import FilesystemSessionStore
 from werkzeug.utils import redirect
 
-#from blogger.data_models.users import authenticate as pw_auth
-#from blogger.data_models.users import get_user_by_screen_name
+from blogger.data_models.users import authenticate as pw_auth
+from blogger.data_models.users import get_user_by_screen_name
+from blogger.data_models.users import add_user_wrapper
 
 from blogger.logger import logging
 from blogger.cfg import cfg
@@ -61,13 +62,10 @@ def auth_check(f):
     return wrapped
 
 
-def logout(req):
-    sid = req.cookies.get('session_id')
-    if sid:
-        session = session_store.get(sid)
-        if 'user_id' in session: del (session['user_id'])
-        session_store.save(session)
-    return Response(render('signin.j2', next_url="/", login_form=True), mimetype='text/html')
+def register_user(req):
+    user_id = req.get('user_id')
+    passwd = req.get('password')
+    add_user_wrapper(user_id, passwd)
 
 
 def login(req):
@@ -92,6 +90,16 @@ def login(req):
                             max_age=cfg.session_timeout,
                             secure=None, httponly=True)
         return response
+
+
+def logout(req):
+    sid = req.cookies.get('session_id')
+    if sid:
+        session = session_store.get(sid)
+        if 'user_id' in session: del (session['user_id'])
+        session_store.save(session)
+    return Response(render('signin.j2', next_url="/", login_form=True), mimetype='text/html')
+
 
 
 def get_session_user_id(req):
