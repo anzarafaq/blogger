@@ -92,5 +92,9 @@ Update a POST
 
 #### Deployments and Configuration
 
-
+Assuming POSTGRES database
+Deployed on an UBUNTU (Linux) machine.
+Deploy schema
+Deploy Apache Web Server
+Configure WSGI file
 
