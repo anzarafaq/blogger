@@ -5,7 +5,6 @@ CREATE TABLE blogger.users (
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     screen_name      varchar(64),  
-    email            varchar(64),
     passwd           varchar(256),
 );
 
@@ -15,4 +14,3 @@ BEFORE UPDATE
 ON blogger.users 
 FOR EACH ROW 
 EXECUTE PROCEDURE update_row_modified_function_();
-
