@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS blogger.blog_access CASCADE;
 CREATE TABLE blogger.blog_access (
    access_id   serial PRIMARY KEY,
    blog_id          integer REFERENCES blogger.blogs (blog_id),   
+   user_id          integer REFERENCES blogger.users (user_id), 
+   status           integer DEFAULT 0,
    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
    updated_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 );
