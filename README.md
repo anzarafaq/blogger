@@ -43,15 +43,20 @@ Desrciption: Logout a user, deletes the session.
 
 Desrciption: Current logged in user requests for access to a certain blog
 
-##### GET /blogs/manage
+##### GET /blogs/users/<user_id>/requests
 
 Desrciption: List of requests for 'permissions' by other users.
 
-##### GET /blogs/requestId/approve
+##### GET /blogs/users/<user_id>/requests/<reuest_id>/approve
 
 Desrciption: Approve an access requests.
 
 #### Blogs and Posts
+
+##### GET /blogs
+
+Desrciption: Returns blogs for current user (if user is signed in), or top 25 blogs.
+
 
 ##### GET /blogs/blogId
 
